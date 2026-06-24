@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="app-container">
         <header class="top-nav">
@@ -22,3 +24,32 @@
                 </ul>
             </nav>
         </header>
+        <main class="main-content">
+            <section id="dashboard" class="view-section active">
+                <header>
+                    <h2>Resumen General</h2>
+                    <p>Bienvenido al panel central de Restaurante Seoul.</p>
+                </header>
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <h3>Platillos en Menú</h3>
+                        <p id="dash-platillos">0</p>
+                    </div>
+                    <div class="card">
+                        <h3>Insumos en Inventario</h3>
+                        <p id="dash-insumos">0</p>
+                    </div>
+                    <div class="card">
+                        <h3>Pedidos del Día</h3>
+                        <p id="dash-pedidos">0</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="storage.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
