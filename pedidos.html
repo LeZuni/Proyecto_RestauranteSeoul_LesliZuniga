@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos - Restaurante Seoul</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="top-nav">
+            <div class="logo">
+                <h1>RESTAURANTE<span>SEOUL</span></h1>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Dashboard</a></li>
+                    <li><a href="platillos.html">Menú</a></li>
+                    <li><a href="pedidos.html" class="active">Pedidos</a></li>
+                    <li><a href="inventario.html">Inventario</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <section id="pedidos" class="view-section active">
+                <header>
+                    <h2>Gestión de Pedidos</h2>
+                    <p>Registra y administra las órdenes de los clientes.</p>
+                </header>
+                <vo-pedidos></vo-pedidos>
+            </section>
+        </main>
+    </div>
+
+    <template id="tpl-pedidos">
+        <div class="panel">
+            <h3>Nuevo Pedido</h3>
+            <form id="form-pedido">
+                <div style="display: flex; gap: 1rem;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Nº de Pedido</label>
+                        <input type="text" id="ped-numero" class="form-control" required>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Fecha y Hora</label>
+                        <input type="datetime-local" id="ped-fecha" class="form-control" required>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <div class="form-group" style="flex: 2;">
+                        <label>Nombre del Cliente</label>
+                        <input type="text" id="ped-cliente" class="form-control" required>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Teléfono</label>
+                        <input type="text" id="ped-telefono" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="panel" style="background: rgba(0,0,0,0.02); border: none; padding: 1.5rem;">
+                    <h4>Platillos del Pedido</h4>
+                    <div style="display: flex; gap: 1rem; align-items: flex-end; margin-bottom: 1rem;">
+                        <div class="form-group" style="flex: 2; margin-bottom: 0;">
+                            <label>Seleccionar Platillo</label>
+                            <select id="ped-platillo" class="form-control"></select>
+                        </div>
+                        <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                            <label>Cantidad</label>
+                            <input type="number" id="ped-plat-cant" class="form-control" min="1" step="1" value="1">
+                        </div>
+                        <button type="button" id="btn-add-platillo-pedido" class="btn-primary"
+                            style="background: transparent; border: 1px solid black; color: black;">Agregar
+                            Plato</button>
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Platillo</th>
+                                <th>Cantidad</th>
+                                <th>Subtotal</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-pedidos-temp"></tbody>
+                    </table>
+                    <h3 style="text-align: right; margin-top: 1.5rem; font-size: 1.5rem;">Total: $<span
+                            id="pedido-total">0.00</span></h3>
+                </div>
+
+                <div class="form-group">
+                    <label>Estado del Pedido</label>
+                    <select id="ped-estado" class="form-control">
+                        <option value="pendiente">Pendiente</option>
+                        <option value="preparacion">En Preparación</option>
+                        <option value="entregado">Entregado</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-primary"
+                    style="width: 100%; font-size: 1.1rem; letter-spacing: 2px;">Confirmar Pedido</button>
+            </form>
+        </div>
+
+        <div class="panel">
+            <h3>Historial de Pedidos</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Nº Pedido</th>
+                        <th>Fecha</th>
+                        <th>Cliente</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-historial-pedidos"></tbody>
+            </table>
+        </div>
+    </template>
+
+    <script src="storage.js"></script>
+    <script src="components/vo-pedidos.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
