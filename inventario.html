@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventario - Restaurante Seoul</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
+    <script src="./auth.js"></script>
 </head>
-
 <body>
     <div class="app-container">
         <header class="top-nav">
@@ -17,10 +16,11 @@
             </div>
             <nav>
                 <ul class="nav-links">
-                    <li><a href="./index.html">Dashboard</a></li>
-                    <li><a href="./platillos.html">Menú</a></li>
-                    <li><a href="./pedidos.html">Pedidos</a></li>
-                    <li><a href="./inventario.html" class="active">Inventario</a></li>
+                    <li><a href="index.html">Dashboard</a></li>
+                    <li><a href="platillos.html">Menú</a></li>
+                    <li><a href="pedidos.html">Pedidos</a></li>
+                    <li><a href="inventario.html" class="active">Inventario</a></li>
+                    <li><a href="#" onclick="logout()">Cerrar sesión</a></li>
                 </ul>
             </nav>
         </header>
@@ -93,5 +93,4 @@
     <script src="./inventario.js"></script>
     <script src="./app.js"></script>
 </body>
-
 </html>
