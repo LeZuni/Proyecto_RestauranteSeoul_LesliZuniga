@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión - Restaurante Seoul</title>
+    <title>Registro - Restaurante Seoul</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
     <script src="./auth.js"></script>
@@ -41,8 +41,8 @@
         <main class="main-content">
             <div class="auth-container">
                 <div class="panel">
-                    <h3>Iniciar Sesión</h3>
-                    <form onsubmit="login(event)">
+                    <h3>Crear Cuenta</h3>
+                    <form onsubmit="register(event)">
                         <div class="form-group">
                             <label for="username">Usuario</label>
                             <input type="text" id="username" class="form-control" required>
@@ -51,10 +51,10 @@
                             <label for="password">Contraseña</label>
                             <input type="password" id="password" class="form-control" required>
                         </div>
-                        <button type="submit" class="btn-primary" style="width: 100%;">Ingresar</button>
+                        <button type="submit" class="btn-primary" style="width: 100%;">Registrarse</button>
                     </form>
                     <div class="auth-links">
-                        ¿No tienes una cuenta? <a href="./registro.html">Regístrate aquí</a>
+                        ¿Ya tienes cuenta? <a href="./login.html">Inicia sesión</a>
                     </div>
                 </div>
             </div>
