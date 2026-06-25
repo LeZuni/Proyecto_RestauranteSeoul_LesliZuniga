@@ -1,12 +1,12 @@
 :root {
     --color-primary: #000000;
-    --color-primary-dark: #222222;
-    --color-secondary: #000000;
-    --color-bg: #FFFFFF;
-    --color-surface: #FFFFFF;
+    --color-primary-dark: #000000;
+    --color-secondary: #041136;
+    --color-bg: #e3f8df;
+    --color-surface: #d8e8e9;
     --color-text: #111111;
     --color-text-light: #777777;
-    --color-border: #EAEAEA;
+    --color-border: #e2150e;
     --color-danger: #D32F2F;
     --shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.04);
     --shadow-card: none;

@@ -139,7 +139,7 @@ class VoPlatillos extends HTMLElement {
                     <img src="${p.imagen}" alt="${p.nombre}" style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--radius-lg); margin-bottom: 0.5rem;">
                     <h4 style="margin: 0; color: var(--color-text); font-weight: 600; font-size: 1.1rem; letter-spacing: 0.5px;">${p.nombre}</h4>
                     <p style="margin: 0; color: var(--color-text-light); font-size: 0.85rem; line-height: 1.4;">${p.descripcion}</p>
-                    <p style="margin: 0; font-weight: 600; font-size: 1rem; color: var(--color-text); margin-top: 0.2rem;">$${p.precio.toFixed(2)}</p>
+                    <p style="margin: 0; font-weight: 600; font-size: 1rem; color: var(--color-text); margin-top: 0.2rem;">Q${p.precio.toFixed(2)}</p>
                     <button class="btn-danger btn-eliminar-plat" data-codigo="${p.codigo}" style="margin-top: 0.5rem; width: max-content; padding: 0.3rem 0.8rem; font-size: 0.75rem;">Eliminar</button>
                 </div>
             `,
