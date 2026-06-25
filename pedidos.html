@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario - Restaurante Seoul</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="top-nav">
+            <div class="logo">
+                <h1>RESTAURANTE<span>SEOUL</span></h1>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Dashboard</a></li>
+                    <li><a href="platillos.html">Menú</a></li>
+                    <li><a href="pedidos.html">Pedidos</a></li>
+                    <li><a href="inventario.html" class="active">Inventario</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <section id="inventario" class="view-section active">
+                <header>
+                    <h2>Gestión de Inventario</h2>
+                    <p>Administra los insumos e ingredientes del restaurante.</p>
+                </header>
+                <vo-inventario></vo-inventario>
+            </section>
+        </main>
+    </div>
+
+    <template id="tpl-inventario">
+        <div class="panel">
+            <h3>Agregar / Editar Insumo</h3>
+            <form id="form-insumo">
+                <div class="form-group">
+                    <label>Código del Insumo</label>
+                    <input type="text" id="ins-codigo" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input type="text" id="ins-nombre" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <input type="text" id="ins-descripcion" class="form-control" required>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Cantidad Disponible</label>
+                        <input type="number" id="ins-cantidad" class="form-control" required min="0" step="0.01">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Unidad de Medida</label>
+                        <select id="ins-unidad" class="form-control" required>
+                            <option value="Gramos">Gramos</option>
+                            <option value="Litros">Litros</option>
+                            <option value="Unidades">Unidades</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">Guardar Insumo</button>
+            </form>
+        </div>
+
+        <div class="panel">
+            <h3>Lista de Insumos</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Cantidad</th>
+                        <th>Unidad</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-insumos">
+                </tbody>
+            </table>
+        </div>
+    </template>
+
+    <script src="storage.js"></script>
+    <script src="components/vo-inventario.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
