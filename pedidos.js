@@ -39,6 +39,14 @@ class VoPedidos extends HTMLElement {
           this.eliminarPedido(e.target.dataset.numero);
       },
     );
+    this.querySelector("#tabla-historial-pedidos").addEventListener(
+      "change",
+      (e) => {
+        if (e.target.classList.contains("select-estado-pedido")) {
+          this.cambiarEstadoPedido(e.target.dataset.numero, e.target.value);
+        }
+      },
+    );
   }
 
   renderSelectPlatillos() {
@@ -224,24 +232,47 @@ class VoPedidos extends HTMLElement {
     }
   }
 
+  cambiarEstadoPedido(numero, nuevoEstado) {
+    let pedidos = StorageHelper.get("vo_pedidos");
+    let pedido = pedidos.find((p) => p.numero === numero);
+    if (pedido) {
+      pedido.estado = nuevoEstado;
+      StorageHelper.save("vo_pedidos", pedidos);
+      this.renderHistorial();
+      document.dispatchEvent(new Event("pedidosActualizados"));
+    }
+  }
+
   renderHistorial() {
     const pedidos = StorageHelper.get("vo_pedidos");
     this.querySelector("#tabla-historial-pedidos").innerHTML =
       pedidos.length === 0
         ? '<tr><td colspan="6">No hay pedidos registrados.</td></tr>'
         : pedidos
-            .map(
-              (p) => `
-                <tr>
-                    <td>${p.numero}</td>
-                    <td>${new Date(p.fecha).toLocaleString()}</td>
-                    <td>${p.cliente}</td>
-                    <td>$${p.total.toFixed(2)}</td>
-                    <td><span class="badge badge-${p.estado}">${p.estado.toUpperCase()}</span></td>
-                    <td><button class="btn-danger btn-eliminar-ped" data-numero="${p.numero}">Eliminar</button></td>
-                </tr>
-            `,
-            )
+            .map((p) => {
+              const colorStyle =
+                p.estado === "pendiente"
+                  ? "background: #FFF3CD; color: #856404; border: 1px solid #FFEEBA;"
+                  : p.estado === "preparacion"
+                    ? "background: #CCE5FF; color: #004085; border: 1px solid #B8DAFF;"
+                    : "background: #D4EDDA; color: #155724; border: 1px solid #C3E6CB;";
+              return `
+                    <tr>
+                        <td>${p.numero}</td>
+                        <td>${new Date(p.fecha).toLocaleString()}</td>
+                        <td>${p.cliente}</td>
+                        <td>$${p.total.toFixed(2)}</td>
+                        <td>
+                            <select class="form-control select-estado-pedido" data-numero="${p.numero}" style="padding: 0.3rem 0.6rem; font-size: 0.85rem; width: max-content; font-family: 'Outfit', sans-serif; font-weight: 600; border-radius: var(--radius-md); ${colorStyle}">
+                                <option value="pendiente" ${p.estado === "pendiente" ? "selected" : ""} style="background: white; color: var(--color-text);">PENDIENTE</option>
+                                <option value="preparacion" ${p.estado === "preparacion" ? "selected" : ""} style="background: white; color: var(--color-text);">PREPARACIÓN</option>
+                                <option value="entregado" ${p.estado === "entregado" ? "selected" : ""} style="background: white; color: var(--color-text);">ENTREGADO</option>
+                            </select>
+                        </td>
+                        <td><button class="btn-danger btn-eliminar-ped" data-numero="${p.numero}">Eliminar</button></td>
+                    </tr>
+                `;
+            })
             .join("");
   }
 }
