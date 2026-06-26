@@ -8,6 +8,7 @@ class VoPedidos extends HTMLElement {
   }
 
   connectedCallback() {
+    this.sincronizarClientes();
     this.renderSelectPlatillos();
     this.renderHistorial();
 
@@ -46,7 +47,7 @@ class VoPedidos extends HTMLElement {
     )
       .map(
         (p) =>
-          `<option value="${p.codigo}">${p.nombre} - Q${p.precio}</option>`,
+          `<option value="${p.codigo}">${p.nombre} - $${p.precio}</option>`,
       )
       .join("");
   }
@@ -86,7 +87,7 @@ class VoPedidos extends HTMLElement {
             <tr>
                 <td>${plat.nombre}</td>
                 <td>${plat.cantidad}</td>
-                <td>Q${plat.subtotal.toFixed(2)}</td>
+                <td>$${plat.subtotal.toFixed(2)}</td>
                 <td><button type="button" class="btn-danger btn-quitar-plat" data-index="${i}">X</button></td>
             </tr>
         `,
@@ -137,6 +138,42 @@ class VoPedidos extends HTMLElement {
     return true;
   }
 
+  sincronizarClientes() {
+    let clientes = StorageHelper.get("vo_clientes");
+    if (!clientes || clientes.length === 0) {
+      const pedidos = StorageHelper.get("vo_pedidos") || [];
+      const conteo = {};
+      pedidos.forEach((p) => {
+        if (p.cliente) {
+          const n = p.cliente.trim();
+          conteo[n] = (conteo[n] || 0) + 1;
+        }
+      });
+      clientes = Object.keys(conteo).map((n) => ({
+        nombre: n,
+        compras: conteo[n],
+      }));
+      StorageHelper.save("vo_clientes", clientes);
+    }
+  }
+
+  actualizarComprasCliente(clienteNombre, incremento) {
+    if (!clienteNombre) return;
+    const nombreLimpio = clienteNombre.trim();
+    if (!nombreLimpio) return;
+
+    let clientes = StorageHelper.get("vo_clientes");
+    let cliente = clientes.find(
+      (c) => c.nombre.toLowerCase() === nombreLimpio.toLowerCase(),
+    );
+    if (cliente) {
+      cliente.compras = Math.max(0, (cliente.compras || 0) + incremento);
+    } else if (incremento > 0) {
+      clientes.push({ nombre: nombreLimpio, compras: incremento });
+    }
+    StorageHelper.save("vo_clientes", clientes);
+  }
+
   guardarPedido() {
     if (this.platillosSeleccionados.length === 0)
       return alert("El pedido está vacío.");
@@ -148,10 +185,12 @@ class VoPedidos extends HTMLElement {
       return alert("El número de pedido ya existe.");
     if (!this.verificarInventario()) return;
 
+    const cliente = this.querySelector("#ped-cliente").value;
+
     pedidos.push({
       numero,
       fecha: this.querySelector("#ped-fecha").value,
-      cliente: this.querySelector("#ped-cliente").value,
+      cliente,
       telefono: this.querySelector("#ped-telefono").value,
       estado: this.querySelector("#ped-estado").value,
       total: parseFloat(this.querySelector("#pedido-total").textContent),
@@ -159,6 +198,7 @@ class VoPedidos extends HTMLElement {
     });
 
     StorageHelper.save("vo_pedidos", pedidos);
+    this.actualizarComprasCliente(cliente, 1);
     alert("Pedido guardado. Inventario actualizado.");
 
     this.querySelector("#form-pedido").reset();
@@ -170,9 +210,14 @@ class VoPedidos extends HTMLElement {
 
   eliminarPedido(numero) {
     if (confirm("¿Eliminar este pedido?")) {
+      const pedidos = StorageHelper.get("vo_pedidos");
+      const pedidoAEliminar = pedidos.find((p) => p.numero === numero);
+      if (pedidoAEliminar) {
+        this.actualizarComprasCliente(pedidoAEliminar.cliente, -1);
+      }
       StorageHelper.save(
         "vo_pedidos",
-        StorageHelper.get("vo_pedidos").filter((p) => p.numero !== numero),
+        pedidos.filter((p) => p.numero !== numero),
       );
       this.renderHistorial();
       document.dispatchEvent(new Event("pedidosActualizados"));
@@ -191,7 +236,7 @@ class VoPedidos extends HTMLElement {
                     <td>${p.numero}</td>
                     <td>${new Date(p.fecha).toLocaleString()}</td>
                     <td>${p.cliente}</td>
-                    <td>Q${p.total.toFixed(2)}</td>
+                    <td>$${p.total.toFixed(2)}</td>
                     <td><span class="badge badge-${p.estado}">${p.estado.toUpperCase()}</span></td>
                     <td><button class="btn-danger btn-eliminar-ped" data-numero="${p.numero}">Eliminar</button></td>
                 </tr>
