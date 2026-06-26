@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes - Restaurante Seoul</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+    <script src="./auth.js"></script>
+    <style>
+        .report-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .kpi-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .kpi-card h4 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--color-text-light);
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+        }
+
+        .kpi-card p {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .kpi-card span {
+            font-size: 0.85rem;
+            color: var(--color-text-light);
+            margin-top: 0.25rem;
+        }
+
+        .progress-bar-container {
+            background: #F0F0F0;
+            border-radius: 4px;
+            height: 6px;
+            width: 100%;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: var(--color-primary);
+            height: 100%;
+            width: 0;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 4px;
+        }
+
+        .table-client-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .table-client-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .badge-compras {
+            background: #F5F5F5;
+            color: var(--color-primary);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: 1px solid var(--color-border);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 5rem 2rem;
+            border: 1px dashed var(--color-border);
+            border-radius: var(--radius-md);
+            background: #FAFAFA;
+        }
+
+        .empty-state h3 {
+            font-weight: 400;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            color: var(--color-text);
+        }
+
+        .empty-state p {
+            color: var(--color-text-light);
+        }
+
+        @media (max-width: 992px) {
+            .report-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="top-nav">
+            <div class="logo">
+                <h1>RESTAURANTE<span>SEOUL</span></h1>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Dashboard</a></li>
+                    <li><a href="platillos.html">Menú</a></li>
+                    <li><a href="pedidos.html">Pedidos</a></li>
+                    <li><a href="inventario.html">Inventario</a></li>
+                    <li><a href="reportes.html" class="active">Reportes</a></li>
+                    <li><a href="#" onclick="logout()">Cerrar sesión</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <header>
+                <h2>Reportes de Clientes</h2>
+                <p>Estadísticas y análisis de frecuencia de compra.</p>
+            </header>
+
+            <div id="contenido-reportes">
+
+                <!-- Tablas de Reportes -->
+                <div class="report-grid">
+                    <div class="panel">
+                        <h3>Top 5 - Clientes Estrella</h3>
+                        <p style="color: var(--color-text-light); font-size: 0.9rem; margin-bottom: 1.5rem;">Clientes
+                            con mayor número de pedidos realizados.</p>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th style="text-align: right;">Total Compras</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-top-clientes">
+                                <!-- Dinámico -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="panel">
+                        <h3>Bottom 5 - Clientes Ocasionales</h3>
+                        <p style="color: var(--color-text-light); font-size: 0.9rem; margin-bottom: 1.5rem;">Clientes
+                            con menor cantidad de compras registradas.</p>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th style="text-align: right;">Total Compras</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-bottom-clientes">
+                                <!-- Dinámico -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="estado-vacio" class="empty-state" style="display: none;">
+                <h3>Sin datos para mostrar</h3>
+                <p>Aún no hay clientes registrados o no se han guardado pedidos en el sistema.</p>
+            </div>
+        </main>
+    </div>
+
+    <script src="storage.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Sincronizar clientes desde pedidos si es necesario
+            function sincronizarClientes() {
+                let clientes = StorageHelper.get('vo_clientes') || [];
+                if (clientes.length === 0) {
+                    const pedidos = StorageHelper.get('vo_pedidos') || [];
+                    const conteo = {};
+                    pedidos.forEach(p => {
+                        if (p.cliente) {
+                            const n = p.cliente.trim();
+                            conteo[n] = (conteo[n] || 0) + 1;
+                        }
+                    });
+                    clientes = Object.keys(conteo).map(n => ({
+                        nombre: n,
+                        compras: conteo[n]
+                    }));
+                    StorageHelper.save('vo_clientes', clientes);
+                }
+                return clientes;
+            }
+
+            const clientes = sincronizarClientes();
+
+            if (clientes.length === 0) {
+                document.getElementById('contenido-reportes').style.display = 'none';
+                document.getElementById('estado-vacio').style.display = 'block';
+                return;
+            }
+
+
+            // Cargar Listados
+            const maxCompras = clientes.reduce((max, c) => c.compras > max ? c.compras : max, 1);
+
+            // Top 5 Clientes
+            const top5 = [...clientes].sort((a, b) => b.compras - a.compras).slice(0, 5);
+            const topHtml = top5.map((c, index) => {
+                const porcentaje = (c.compras / maxCompras) * 100;
+                return `
+                    <tr>
+                        <td>
+                            <div class="table-client-info">
+                                <span class="table-client-name">${c.nombre}</span>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" id="top-bar-${index}" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="text-align: right; vertical-align: middle;">
+                            <span class="badge-compras">${c.compras} compras</span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            document.getElementById('tabla-top-clientes').innerHTML = topHtml;
+
+            // Bottom 5 Clientes
+            const bottom5 = [...clientes].sort((a, b) => a.compras - b.compras).slice(0, 5);
+            const bottomHtml = bottom5.map((c, index) => {
+                const porcentaje = (c.compras / maxCompras) * 100;
+                return `
+                    <tr>
+                        <td>
+                            <div class="table-client-info">
+                                <span class="table-client-name">${c.nombre}</span>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" id="bottom-bar-${index}" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="text-align: right; vertical-align: middle;">
+                            <span class="badge-compras">${c.compras} compras</span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            document.getElementById('tabla-bottom-clientes').innerHTML = bottomHtml;
+
+            // Micro-animación: Cargar las barras de progreso con un leve retardo para efecto de animación
+            setTimeout(() => {
+                top5.forEach((c, index) => {
+                    const bar = document.getElementById(`top-bar-${index}`);
+                    if (bar) {
+                        const porcentaje = (c.compras / maxCompras) * 100;
+                        bar.style.width = `${porcentaje}%`;
+                    }
+                });
+
+                bottom5.forEach((c, index) => {
+                    const bar = document.getElementById(`bottom-bar-${index}`);
+                    if (bar) {
+                        const porcentaje = (c.compras / maxCompras) * 100;
+                        bar.style.width = `${porcentaje}%`;
+                    }
+                });
+            }, 100);
+        });
+    </script>
+</body>
+
+</html>

@@ -55,7 +55,7 @@ class VoPedidos extends HTMLElement {
     )
       .map(
         (p) =>
-          `<option value="${p.codigo}">${p.nombre} - $${p.precio}</option>`,
+          `<option value="${p.codigo}">${p.nombre} - Q${p.precio}</option>`,
       )
       .join("");
   }
@@ -95,7 +95,7 @@ class VoPedidos extends HTMLElement {
             <tr>
                 <td>${plat.nombre}</td>
                 <td>${plat.cantidad}</td>
-                <td>$${plat.subtotal.toFixed(2)}</td>
+                <td>Q${plat.subtotal.toFixed(2)}</td>
                 <td><button type="button" class="btn-danger btn-quitar-plat" data-index="${i}">X</button></td>
             </tr>
         `,
@@ -261,7 +261,7 @@ class VoPedidos extends HTMLElement {
                         <td>${p.numero}</td>
                         <td>${new Date(p.fecha).toLocaleString()}</td>
                         <td>${p.cliente}</td>
-                        <td>$${p.total.toFixed(2)}</td>
+                        <td>Q${p.total.toFixed(2)}</td>
                         <td>
                             <select class="form-control select-estado-pedido" data-numero="${p.numero}" style="padding: 0.3rem 0.6rem; font-size: 0.85rem; width: max-content; font-family: 'Outfit', sans-serif; font-weight: 600; border-radius: var(--radius-md); ${colorStyle}">
                                 <option value="pendiente" ${p.estado === "pendiente" ? "selected" : ""} style="background: white; color: var(--color-text);">PENDIENTE</option>
