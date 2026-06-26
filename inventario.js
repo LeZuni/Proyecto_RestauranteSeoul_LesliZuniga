@@ -33,15 +33,18 @@ class VoInventario extends HTMLElement {
     let insumos = StorageHelper.get("vo_insumos");
     const index = insumos.findIndex((i) => i.codigo === insumo.codigo);
 
-    if (index >= 0) insumos[index] = insumo;
-    else insumos.push(insumo);
+    if (index >= 0) {
+      alert("Error: El código de insumo ya existe.");
+      return;
+    }
 
+    insumos.push(insumo);
     StorageHelper.save("vo_insumos", insumos);
     this.querySelector("#form-insumo").reset();
     this.renderTabla();
     document.dispatchEvent(new Event("inventarioActualizado"));
 
-    alert(index >= 0 ? "Insumo actualizado." : "Insumo creado.");
+    alert("Insumo creado.");
   }
 
   eliminarInsumo(codigo) {
