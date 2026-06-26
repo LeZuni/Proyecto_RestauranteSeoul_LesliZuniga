@@ -2,8 +2,8 @@
     --color-primary: #000000;
     --color-primary-dark: #000000;
     --color-secondary: #041136;
-    --color-bg: #e3f8df;
-    --color-surface: #d8e8e9;
+    --color-bg: #f5f5f5;
+    --color-surface: #f6fafa;
     --color-text: #111111;
     --color-text-light: #777777;
     --color-border: #e2150e;
@@ -295,3 +295,4 @@ header p {
         padding: 2rem 1rem;
     }
 }
+
